@@ -1,11 +1,16 @@
 import React from 'react';
-import HomePage from './homepage.component';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './page/homepage/homepage.component';
 import './App.css';
+import ShopPage from './page/shoppage/shop.component';
 
 function App() {
   return (
     <div>
-      <HomePage />
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/shop' element={<ShopPage />} />
+      </Routes>
     </div>
   );
 }

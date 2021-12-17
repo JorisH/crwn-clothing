@@ -3,10 +3,12 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './page/homepage/homepage.component';
 import './App.css';
 import ShopPage from './page/shoppage/shop.component';
+import Header from './components/header/header.component';
 
 function App() {
   return (
     <div>
+      <Header />
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/shop' element={<ShopPage />} />

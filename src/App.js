@@ -7,34 +7,36 @@ import ShopPage from './page/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './page/sing-in-and-sign-up/sing-in-and-sign-up.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.actions';
 
-const App = () => {
+const App = () => { 
 
-  const [user, setUser] = React.useState(null);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) { // sign in        
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
-          setUser({
+          dispatch(setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
-          });
+          }));
         })
       } else { // sign out
-        setUser(null);
+        dispatch(setCurrentUser(null));
       }
     });
 
     return (() => {
       unsubscribeFromAuth();
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
-      <Header user={user} />
+      <Header />
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/shop' element={<ShopPage />} />

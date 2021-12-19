@@ -6,8 +6,7 @@ import './sign-in.styles.scss';
 import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 
 const SignIn = () => {
-
-  // init state variables
+  
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -16,13 +15,12 @@ const SignIn = () => {
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
+      // clear form for now
+      setEmail('');
+      setPassword('');
     } catch (error) {
       console.log("problem signing in: ", error.message);
     }
-
-    // clear form for now
-    setEmail('');
-    setPassword('');
   }
 
   return (

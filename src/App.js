@@ -37,7 +37,7 @@ const App = () => {
     });
   }, [dispatch]);
 
-  const SignIn = () => (
+  const SignInOrNavigateToHome = () => (
     currentUser ? <Navigate to="/" /> : <SignInAndSignUpPage />
   );
 
@@ -47,7 +47,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/shop' element={<ShopPage />} />
-        <Route path='/signin' element={<SignIn />} />
+        <Route path='/signin' element={<SignInOrNavigateToHome />} />
       </Routes>
     </div>
   );

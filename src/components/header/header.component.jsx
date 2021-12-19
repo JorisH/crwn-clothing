@@ -3,26 +3,29 @@ import './header.styles.scss'
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase.utils';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const Header = ({user}) => (
-  <div className='header'>
-    <Link className='logo-container' to="/"><Logo className='logo' /></Link>
-    <div className='options'>
-      <Link className='option' to="/shop">SHOP</Link>
-      <Link className='option' to="/contact">CONTACT</Link>
-      {
-        user ?
-        <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
-        : <Link className='option' to="/signin">SIGN IN</Link>
-      }
-      
+const Header = () => {
+
+  const { user } = useSelector(state => ({
+    user: state.user.currentUser
+  }));
+
+  return (
+    <div className='header'>
+      <Link className='logo-container' to="/"><Logo className='logo' /></Link>
+      <div className='options'>
+        <Link className='option' to="/shop">SHOP</Link>
+        <Link className='option' to="/contact">CONTACT</Link>
+        {
+          user ?
+            <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
+            : <Link className='option' to="/signin">SIGN IN</Link>
+        }
+
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
-const mapStateToProps = state => ({
-  user: state.user.currentUser
-});
-
-export default connect(mapStateToProps)(Header);
+export default Header;

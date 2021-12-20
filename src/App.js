@@ -1,5 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import './App.css';
 
 import HomePage from './page/homepage/homepage.component';
@@ -7,8 +9,8 @@ import ShopPage from './page/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './page/sing-in-and-sign-up/sing-in-and-sign-up.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentUser } from './redux/user/user.actions';
+import CheckoutPage from './page/checkout/checkout.component';
 
 const App = () => {
 
@@ -48,6 +50,7 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/shop' element={<ShopPage />} />
         <Route path='/signin' element={<SignInOrNavigateToHome />} />
+        <Route path='/checkout' element={<CheckoutPage />} />
       </Routes>
     </div>
   );

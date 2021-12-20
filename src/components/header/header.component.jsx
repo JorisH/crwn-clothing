@@ -1,17 +1,22 @@
 import React from 'react';
-import './header.styles.scss'
-import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { Link } from 'react-router-dom';
-import { auth } from '../../firebase/firebase.utils';
 import { useSelector } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { ReactComponent as Logo } from '../../assets/crown.svg';
+import './header.styles.scss'
+
+import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
 
 const Header = () => {
 
-  const { currentUser, cartHidden } = useSelector(state => ({
-    currentUser: state.user.currentUser,
-    cartHidden: state.cart.hidden
+  const { currentUser, cartHidden } = useSelector(createStructuredSelector({
+    currentUser: selectCurrentUser,
+    cartHidden: selectCartHidden
   }));
 
   return (

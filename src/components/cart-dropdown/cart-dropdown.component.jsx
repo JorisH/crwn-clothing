@@ -1,15 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+
+import './cart-dropdown.styles.scss';
+
 import { selectCartItems } from '../../redux/cart/cart.selectors';
 import CartItem from '../cart-item/cart-item.component';
 import CustomButton from '../custom-button/custom-button.component';
-import './cart-dropdown.styles.scss';
 
 const CartDropdown = () => {
 
-  const { cartItems } = useSelector(state => ({
-    cartItems: selectCartItems(state)
+  const { cartItems } = useSelector(createStructuredSelector({
+    cartItems: selectCartItems
   }));
 
   const navigate = useNavigate();

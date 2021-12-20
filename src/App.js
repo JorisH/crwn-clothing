@@ -11,12 +11,15 @@ import SignInAndSignUpPage from './page/sing-in-and-sign-up/sing-in-and-sign-up.
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import CheckoutPage from './page/checkout/checkout.component';
+import { selectCurrentUser } from './redux/user/user.selectors';
+import { createStructuredSelector } from 'reselect';
 
 const App = () => {
 
   const dispatch = useDispatch();
-  const { currentUser } = useSelector(state => ({
-    currentUser: state.user.currentUser
+  
+  const { currentUser } = useSelector(createStructuredSelector({
+    currentUser: selectCurrentUser
   }));
 
   React.useEffect(() => {

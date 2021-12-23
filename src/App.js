@@ -19,7 +19,7 @@ const App = () => {
   const dispatch = useDispatch();
   
   const { currentUser } = useSelector(createStructuredSelector({
-    currentUser: selectCurrentUser
+    currentUser: selectCurrentUser    
   }));
 
   React.useEffect(() => {

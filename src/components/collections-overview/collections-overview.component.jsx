@@ -13,8 +13,6 @@ const CollectionsOverview = () => {
     collections: selectCollections
   }));
 
-  console.log(Object.values(collections));
-
   return (
     <div className="collections-overview">
       {

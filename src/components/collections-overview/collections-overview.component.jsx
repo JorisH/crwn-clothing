@@ -4,19 +4,19 @@ import { createStructuredSelector } from "reselect";
 
 import "./collections-overview.scss";
 
-import { selectCollections } from "../../redux/shop/shop.selectors";
+import { selectCollectionsAsArray } from "../../redux/shop/shop.selectors";
 import CollectionPreview from "../collection-preview/collection-preview.component";
 
 const CollectionsOverview = () => {
 
   const { collections } = useSelector(createStructuredSelector({
-    collections: selectCollections
+    collections: selectCollectionsAsArray
   }));
 
   return (
     <div className="collections-overview">
       {
-        Object.values(collections).map(({ id, ...otherProps }) => (
+        collections.map(({ id, ...otherProps }) => (
           <CollectionPreview key={id} {...otherProps} />
         ))
       }

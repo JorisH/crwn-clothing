@@ -11,6 +11,8 @@ const config = {
   appId: "1:67688869969:web:5ce837edc589ef462f4870"
 };
 
+firebase.initializeApp(config);
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return; // user signed out
 
@@ -21,7 +23,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
-    try {      
+    try {
       await userRef.set({
         displayName,
         email,
@@ -36,7 +38,37 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 }
 
-firebase.initializeApp(config);
+// utility function to populate firebase
+export const addCollectionAndItems = async (collectionKey, itemsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  itemsToAdd.forEach(item => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, item);
+  });
+
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collections => {
+  // add routename, which is not stored in firebase
+  const transformedCollections = collections.docs.map(doc => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    }
+  });
+
+  // convert array to hashmap
+  return transformedCollections.reduce((acc, collection) => {
+    acc[collection.title.toLowerCase()] = collection;
+    return acc;
+  }, {});
+});
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

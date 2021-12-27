@@ -10,10 +10,10 @@ export const selectCollectionsAsObject = createSelector(
 
 export const selectCollectionsAsArray = createSelector(
   [selectCollectionsAsObject],
-  collections => Object.values(collections)
+  collections => collections ? Object.values(collections) : []
 )
 
 export const selectCollection = memoize((collectionSlug) => createSelector(
   [selectCollectionsAsObject],
-  collections => collections[collectionSlug]
+  collections => collections ? collections[collectionSlug] : null
 ));

@@ -1,24 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useDispatch } from 'react-redux';
 
 import './shop.component.styles.scss';
 
-import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
-import CollectionPage from '../collection/collection.component';
-import withSpinner from '../../components/with-spinner/with-spinner.component';
-import { selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
 import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
-
-const CollectionsOverviewWithSpinner = withSpinner(CollectionsOverview);
-const CollectionPageWithSpinner = withSpinner(CollectionPage);
+import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
+import CollectionPageContainer from '../collection/collection.container';
 
 const ShopPage = () => {
-
-  const { isLoading } = useSelector(createStructuredSelector({
-    isLoading: selectIsCollectionFetching
-  }));
 
   const dispatch = useDispatch();
 
@@ -29,8 +19,8 @@ const ShopPage = () => {
   return (
     <div className='shop-page'>
       <Routes>
-        <Route path="/" element={<CollectionsOverviewWithSpinner isLoading={isLoading} />} />
-        <Route path=":collectionSlug" element={<CollectionPageWithSpinner isLoading={isLoading} />} />
+        <Route path="/" element={<CollectionsOverviewContainer />} />
+        <Route path=":collectionSlug" element={<CollectionPageContainer />} />
       </Routes>
     </div>
   )

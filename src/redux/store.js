@@ -4,7 +4,7 @@ import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from "./root-reducer";
-import { watchFetchCollectionsStart } from "./shop/shop.sagas";
+import rootSaga from "./root-saga";
 
 // config object can be passed a optional arg
 const sagaMiddleware = createSagaMiddleware()
@@ -17,6 +17,6 @@ if (process.env.NODE_ENV === 'development') {
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
-sagaMiddleware.run(watchFetchCollectionsStart);
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);

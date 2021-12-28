@@ -1,8 +1,11 @@
 import React from 'react';
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
+import { useDispatch } from 'react-redux';
+
+import './sign-up.styles.scss';
+
+import { signUpStart } from '../../redux/user/user.actions';
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
-import './sign-up.styles.scss';
 
 const SignUp = () => {
 
@@ -11,12 +14,7 @@ const SignUp = () => {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
 
-  const clearForm = () => {
-    setDisplayName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-  }
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,16 +24,7 @@ const SignUp = () => {
       return;
     }
 
-    try {      
-      // this call also triggers the onAuthStateChanged Observer in App.js      
-      const { user } = await auth.createUserWithEmailAndPassword(email, password);      
-      // this call is alse executed in the onAuthStateChanged Observer in App.js
-      // is that ok???
-      await createUserProfileDocument(user, { displayName });
-      clearForm();
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(signUpStart(displayName, email, password));
   }
 
   return (

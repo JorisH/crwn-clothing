@@ -4,9 +4,9 @@ import UserActionTypes from "./user.action-types"
 import { auth, createUserProfileDocument, retrieveUserFromSession, signInWithGoogle } from '../../firebase/firebase.utils';
 import { signInFailure, signInSuccess, signOutFailure, signOutSuccess, signUpFailure, signUpSuccess } from "./user.actions";
 
-function* getSnapshotAndSignInUser(firebaseAuthUser) {
+function* getSnapshotAndSignInUser(firebaseAuthUser, additionalData) {
   try {
-    const userRef = yield createUserProfileDocument(firebaseAuthUser);
+    const userRef = yield call(createUserProfileDocument, firebaseAuthUser, additionalData);
     const snapshot = yield userRef.get();
     yield put(signInSuccess({
       id: snapshot.id,
@@ -58,19 +58,14 @@ function* signOut() {
 function* signUp({ payload: { email, password, displayName } }) {
   try {
     const { user: firebaseAuthUser } = yield auth.createUserWithEmailAndPassword(email, password);
-    const userRef = yield createUserProfileDocument(firebaseAuthUser, { displayName });
-    const snapshot = yield userRef.get();
-    yield put(signUpSuccess({
-      id: snapshot.id,
-      ...snapshot.data()
-    }));
+    yield put(signUpSuccess(firebaseAuthUser, { displayName }));
   } catch (error) {
     yield put(signUpFailure(error));
   }
 }
 
-function* signUpSuccessSaga({ payload: user }) {
-  yield put(signInSuccess(user));
+function* signUpSuccessSaga({ payload: { firebaseAuthUser, additionalData } }) {
+  yield getSnapshotAndSignInUser(firebaseAuthUser, additionalData);
 }
 
 function* watchGoogleSignInStart() {

@@ -1,10 +1,5 @@
 import UserActionTypes from "./user.action-types";
 
-export const setCurrentUser = user => ({
-  type: UserActionTypes.SET_CURRENT_USER,
-  payload: user
-});
-
 export const googleSignInStart = () => ({
   type: UserActionTypes.GOOGLE_SIGN_IN_START
 });
@@ -46,9 +41,9 @@ export const signUpStart = (displayName, email, password) => ({
   payload: { displayName, email, password }
 });
 
-export const signUpSuccess = (user) => ({
+export const signUpSuccess = (firebaseAuthUser, additionalData) => ({
   type: UserActionTypes.SIGN_UP_SUCCESS,
-  payload: user
+  payload: { firebaseAuthUser, additionalData }
 
 });
 

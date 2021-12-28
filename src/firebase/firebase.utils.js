@@ -77,4 +77,14 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
+// function to check if user is persisted in the session
+export const retrieveUserFromSession = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribeFromAuth = auth.onAuthStateChanged(firebaseUser => {
+      unsubscribeFromAuth();
+      resolve(firebaseUser);
+    }, reject);
+  })
+};
+
 export default firebase;

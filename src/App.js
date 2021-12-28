@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import './App.css';
@@ -11,12 +11,19 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './page/sing-in-and-sign-up/sing-in-and-sign-up.component';
 import CheckoutPage from './page/checkout/checkout.component';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { checkUserSession } from './redux/user/user.actions';
 
 const App = () => {
-  
+
   const { currentUser } = useSelector(createStructuredSelector({
-    currentUser: selectCurrentUser    
+    currentUser: selectCurrentUser
   }));
+
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(checkUserSession());
+  }, [dispatch]);
 
   const SignInOrNavigateToHome = () => (
     currentUser ? <Navigate to="/" /> : <SignInAndSignUpPage />

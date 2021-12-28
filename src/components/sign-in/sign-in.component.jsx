@@ -5,28 +5,18 @@ import './sign-in.styles.scss';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
-import { googleSignInStart } from '../../redux/user/user.actions';
-import { auth } from '../../firebase/firebase.utils';
-
+import { emailSignInStart, googleSignInStart } from '../../redux/user/user.actions';
 
 const SignIn = () => {
-  
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      // clear form for now
-      setEmail('');
-      setPassword('');
-    } catch (error) {
-      console.log("problem signing in: ", error.message);
-    }
+    dispatch(emailSignInStart(email, password));
   }
 
   return (

@@ -1,8 +1,8 @@
 import { all, call, put, takeLatest } from "redux-saga/effects"
 
 import UserActionTypes from "./user.action-types"
-import { createUserProfileDocument, retrieveUserFromSession, signInWithGoogle } from '../../firebase/firebase.utils';
-import { signInFailure, signInSuccess } from "./user.actions";
+import { auth, createUserProfileDocument, retrieveUserFromSession, signInWithGoogle } from '../../firebase/firebase.utils';
+import { signInFailure, signInSuccess, signOutFailure, signOutSuccess } from "./user.actions";
 
 function* getSnapshotAndSignInUser(firebaseAuthUser) {
   try {
@@ -26,6 +26,15 @@ function* googleSignIn() {
   }
 }
 
+function* emailSignIn({ payload: { email, password } }) {
+  try {
+    const { user: firebaseAuthUser } = yield auth.signInWithEmailAndPassword(email, password);
+    yield call(getSnapshotAndSignInUser, firebaseAuthUser);
+  } catch (error) {
+    yield put(signInFailure(error));
+  }
+}
+
 function* checkUserSession() {
   try {
     const firebaseAuthUser = yield retrieveUserFromSession();
@@ -37,18 +46,37 @@ function* checkUserSession() {
   }
 }
 
+function* signOut() {
+  try {
+    yield auth.signOut();
+    yield put(signOutSuccess());
+  } catch (error) {
+    yield put(signOutFailure(error));
+  }
+}
+
 function* watchGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, googleSignIn);
+}
+
+function* watchEmailSignInStart() {
+  yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, emailSignIn);
 }
 
 function* watchCheckUserSession() {
   yield takeLatest(UserActionTypes.CHECK_USER_SESSION, checkUserSession);
 }
 
+function* watchSignOut() {
+  yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut);
+}
+
 function* userSagas() {
   yield all([
     call(watchGoogleSignInStart),
-    call(watchCheckUserSession)
+    call(watchEmailSignInStart),
+    call(watchCheckUserSession),
+    call(watchSignOut),
   ]);
 }
 

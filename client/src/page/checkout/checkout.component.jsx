@@ -34,7 +34,7 @@ const CheckoutPage = () => {
       {
         cartItems.map(item => <CheckoutItem key={item.id} item={item} />)
       }
-      <div className='total'>TOTAL: ${totalPrice}</div>
+      <div className='total'>TOTAL: &euro;{totalPrice}</div>
       <div className='test-warning'>
         *Please use the following test credit card for payments*
         <br />

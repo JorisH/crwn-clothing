@@ -1,13 +1,14 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
-import { selectIsCollectionsFetching } from "../../redux/shop/shop.selectors";
+
+import { selectIsCollectionsLoaded } from "../../redux/shop/shop.selectors";
 import WithSpinner from "../with-spinner/with-spinner.component";
 import CollectionOverview from "./collections-overview.component"
 
 // when all we want is pass down props, mapStateToProps is easier/faster/shorter
 const mapStateToProps = createStructuredSelector({
-  isLoading: selectIsCollectionsFetching
+  isLoading: state => !selectIsCollectionsLoaded(state)
 });
 
 // use compose from redux for better readability

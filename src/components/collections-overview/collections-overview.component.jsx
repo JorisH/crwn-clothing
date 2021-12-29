@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import "./collections-overview.scss";
 
@@ -9,9 +8,7 @@ import CollectionPreview from "../collection-preview/collection-preview.componen
 
 const CollectionsOverview = () => {
 
-  const { collections } = useSelector(createStructuredSelector({
-    collections: selectCollectionsAsArray
-  }));
+  const collections = useSelector(selectCollectionsAsArray);
 
   return (
     <div className="collections-overview">

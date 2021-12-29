@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { clearItemFromCart, removeItem, addItem } from '../../redux/cart/cart.actions';
 
 import './checkout-item.styles.scss';
+
+import { clearItemFromCart, removeItem, addItem } from '../../redux/cart/cart.actions';
 
 const CheckoutItem = ({ item }) => {
 
   const { name, imageUrl, price, quantity } = item;
-
   const dispatch = useDispatch();
 
   return (

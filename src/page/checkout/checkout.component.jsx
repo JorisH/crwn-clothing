@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
 import './checkout.styles.scss';
 
@@ -10,10 +9,8 @@ import StripeCheckoutButton from '../../components/stripe-button/stripe-button.c
 
 const CheckoutPage = () => {
 
-  const { cartItems, totalPrice } = useSelector(createStructuredSelector({
-    cartItems: selectCartItems,
-    totalPrice: selectTotalPrice
-  }))
+  const cartItems = useSelector(selectCartItems);
+  const totalPrice = useSelector(selectTotalPrice);
 
   return (
     <div className='checkout-page'>

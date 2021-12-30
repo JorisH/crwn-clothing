@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import './shop.component.styles.scss';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
-import CollectionPageContainer from '../collection/collection.container';
+import Spinner from '../../components/spinner/spinner.component';
 
-const ShopPage = () => {
+const CollectionPageContainer = lazy(() => import('../collection/collection.container'));
+const CollectionsOverviewContainer = lazy(() => import('../../components/collections-overview/collections-overview.container'));
+
+const ShopPage = () => {  
 
   const dispatch = useDispatch();
 
@@ -18,10 +20,12 @@ const ShopPage = () => {
 
   return (
     <div className='shop-page'>
-      <Routes>
-        <Route path="/" element={<CollectionsOverviewContainer />} />
-        <Route path=":collectionSlug" element={<CollectionPageContainer />} />
-      </Routes>
+      <Suspense fallback={<Spinner />}>
+        <Routes>
+          <Route path="/" element={<CollectionsOverviewContainer />} />
+          <Route path=":collectionSlug" element={<CollectionPageContainer />} />
+        </Routes>
+      </Suspense>
     </div>
   )
 }
